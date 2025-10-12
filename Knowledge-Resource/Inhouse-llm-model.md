@@ -80,7 +80,7 @@ A pragmatic, production‑minded guide for building an **in‑house multimodal L
 
 ## 2) End‑to‑End Flow Diagram (Mermaid)
 
-```mermaid
+```
 flowchart TD
   A[Data Sources\n(web/code/docs/emails/images/audio)] --> B[Ingest & Pre-ETL\nparsing, normalize, metadata]
   B --> C[Safety & License Filters\nPII, toxicity, license, langID]
