@@ -1,6 +1,30 @@
 # LLM Terminology & Concepts — Comprehensive Glossary
 
-> A practical, high‑coverage glossary of modern Large Language Model (LLM) terms. Grouped by topic, includes acronyms, common synonyms, and quick notes. (You won’t *literally* find **every** term in the universe, but this aims to be exhaustive for day‑to‑day engineering, research papers, and productization.)
+> A practical, high‑coverage glossary of modern Large Language Model (LLM) terms. Grouped by topic, includes acronyms, common synonyms, and quick notes. (You won’t _literally_ find **every** term in the universe, but this aims to be exhaustive for day‑to‑day engineering, research papers, and productization.)
+
+```
+sunforge-llm/
+├─ tokenizer/
+│  └─ train_spm.py
+├─ data/
+│  ├─ raw/            # your licensed corpora
+│  ├─ processed/      # cleaned text files
+│  └─ shards/         # token-packed int32 files
+├─ model/
+│  ├─ transformer.py  # your decoder-only impl (no HF)
+│  ├─ train.py        # pretraining loop
+│  ├─ sft.py          # supervised finetune
+│  ├─ dpo.py          # preference tuning (later)
+│  └─ infer_server.py # FastAPI inference
+├─ configs/
+│  ├─ tok.yaml        # tokenizer params
+│  ├─ 50m.yaml        # 50M config
+│  ├─ 350m.yaml       # 350M config
+│  └─ train.yaml      # optimizer/schedule/global
+└─ scripts/
+   ├─ clean_dedup.py
+   └─ pack_sequences.py
+```
 
 ---
 
@@ -25,7 +49,7 @@
 
 - **Language Model (LM)** — Model that assigns probabilities to sequences of tokens.
 - **Causal LM / Autoregressive LM** — Predicts next token given previous tokens.
-- **Masked LM** — Predicts masked tokens (e.g., BERT) — *not typically used for generation*.
+- **Masked LM** — Predicts masked tokens (e.g., BERT) — _not typically used for generation_.
 - **Seq2Seq** — Encoder–decoder model for conditional generation (e.g., translation).
 - **Perplexity (PPL)** — Exponential of average negative log‑likelihood; lower is better.
 - **Next‑Token Prediction (NTP)** — Standard pretraining objective for causal LMs.
@@ -327,32 +351,33 @@
 
 ## 22) Common Acronyms (Quick Table)
 
-| Acronym | Expansion | Context |
-|---|---|---|
-| LM | Language Model | General |
-| LLM | Large Language Model | General |
-| VLM | Vision‑Language Model | Multimodal |
-| RAG | Retrieval‑Augmented Generation | Retrieval |
-| SFT | Supervised Fine‑Tuning | Alignment |
-| RLHF | Reinforcement Learning from Human Feedback | Alignment |
-| DPO | Direct Preference Optimization | Alignment |
-| PPO | Proximal Policy Optimization | RL |
-| MoE | Mixture of Experts | Architecture |
-| MHA | Multi‑Head Attention | Transformer |
-| GQA/MQA | Grouped/Multiple Query Attention | Attention scaling |
-| RoPE | Rotary Position Embedding | Positional encoding |
-| ALiBi | Attention with Linear Biases | Positional bias |
-| FP8/BF16/FP16 | Numeric Precisions | Training/Inference |
-| FSDP | Fully Sharded Data Parallel | Training |
-| ZeRO | Zero Redundancy Optimizer | Memory scaling |
-| DDP | Distributed Data Parallel | Training |
-| EMA | Exponential Moving Average | Stabilization |
-| PPL | Perplexity | Metric |
-| EM/F1 | Exact Match / F1 | Eval |
-| HNSW/IVF/PQ | Index structures | Vectors |
-| KV Cache | Key‑Value Cache | Inference |
+| Acronym       | Expansion                                  | Context             |
+| ------------- | ------------------------------------------ | ------------------- |
+| LM            | Language Model                             | General             |
+| LLM           | Large Language Model                       | General             |
+| VLM           | Vision‑Language Model                      | Multimodal          |
+| RAG           | Retrieval‑Augmented Generation             | Retrieval           |
+| SFT           | Supervised Fine‑Tuning                     | Alignment           |
+| RLHF          | Reinforcement Learning from Human Feedback | Alignment           |
+| DPO           | Direct Preference Optimization             | Alignment           |
+| PPO           | Proximal Policy Optimization               | RL                  |
+| MoE           | Mixture of Experts                         | Architecture        |
+| MHA           | Multi‑Head Attention                       | Transformer         |
+| GQA/MQA       | Grouped/Multiple Query Attention           | Attention scaling   |
+| RoPE          | Rotary Position Embedding                  | Positional encoding |
+| ALiBi         | Attention with Linear Biases               | Positional bias     |
+| FP8/BF16/FP16 | Numeric Precisions                         | Training/Inference  |
+| FSDP          | Fully Sharded Data Parallel                | Training            |
+| ZeRO          | Zero Redundancy Optimizer                  | Memory scaling      |
+| DDP           | Distributed Data Parallel                  | Training            |
+| EMA           | Exponential Moving Average                 | Stabilization       |
+| PPL           | Perplexity                                 | Metric              |
+| EM/F1         | Exact Match / F1                           | Eval                |
+| HNSW/IVF/PQ   | Index structures                           | Vectors             |
+| KV Cache      | Key‑Value Cache                            | Inference           |
 
 ---
 
 ### Final Notes
+
 - Terminology evolves. New kernels (e.g., FlashAttention‑3), new routing (MoE variants), and fresh alignment methods appear frequently. The categories above give you 95% coverage for building, evaluating, and shipping LLM systems.
