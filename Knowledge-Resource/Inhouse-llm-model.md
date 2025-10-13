@@ -82,26 +82,26 @@ A pragmatic, production‑minded guide for building an **in‑house multimodal L
 
 ```mermaid
 flowchart TD
-  A[Data Sources\n(web/code/docs/emails/images/audio)] --> B[Ingest & Pre-ETL\nparsing, normalize, metadata]
-  B --> C[Safety & License Filters\nPII, toxicity, license, langID]
-  C --> D[Dedup & Quality\nMinHash/SimHash, heuristics, scoring]
-  D --> E[Tokenizer Training\nSentencePiece BPE/Unigram, byte-fallback]
-  E --> F[Tokenization & Packing\nfixed-length shards, mmap bins]
-  D --> G[Multimodal Prep\nimage crops, captions; audio features]
-  F --> H[Pretraining (LM)\nfrom-scratch decoder-only]
-  G --> I[Encoder Training (Vision/Audio)\nViT/Conformer from scratch]
-  I --> J[Projector Alignment\nmap encoders -> LM hidden]
-  H --> K[SFT (Instruction Tuning)\nchat format + tools]
-  K --> L[Preference Tuning\nDPO/RRHF, policy constraints]
-  L --> M[Evaluation\nPPL, code tasks, long-context, safety]
+  A[Data Sources<br/>web / code / docs / emails / images / audio] --> B[Ingest & Pre-ETL<br/>parsing, normalize, metadata]
+  B --> C[Safety & License Filters<br/>PII, toxicity, license, langID]
+  C --> D[Dedup & Quality<br/>MinHash/SimHash, heuristics, scoring]
+  D --> E[Tokenizer Training<br/>SentencePiece BPE-Unigram, byte-fallback]
+  E --> F[Tokenization & Packing<br/>fixed-length shards, mmap bins]
+  D --> G[Multimodal Prep<br/>image crops, captions; audio features]
+  F --> H[Pretraining LM<br/>from-scratch decoder-only]
+  G --> I[Encoder Training Vision-Audio<br/>ViT, Conformer from scratch]
+  I --> J[Projector Alignment<br/>map encoders -> LM hidden]
+  H --> K[SFT Instruction Tuning<br/>chat format + tools]
+  K --> L[Preference Tuning<br/>DPO-RRHF, policy constraints]
+  L --> M[Evaluation<br/>PPL, code tasks, long-context, safety]
   M --> N{Meets Gates?}
   N -- No --> H
-  N -- Yes --> O[Export & Quantize\nBF16/FP16/INT8/INT4]
-  O --> P[Serving Engine\nvLLM/TensorRT-LLM]
-  P --> Q[Gateway & Tools\nFastAPI, function calling]
-  Q --> R[Observability & Safety\nmetrics, traces, filters]
-  R --> S[Product Integration\nAPIs, SDKs, RAG]
-  S --> T[Feedback Loop\ntelemetry -> data mining]
+  N -- Yes --> O[Export & Quantize<br/>BF16 / FP16 / INT8 / INT4]
+  O --> P[Serving Engine<br/>vLLM / TensorRT-LLM]
+  P --> Q[Gateway & Tools<br/>FastAPI, function calling]
+  Q --> R[Observability & Safety<br/>metrics, traces, filters]
+  R --> S[Product Integration<br/>APIs, SDKs, RAG]
+  S --> T[Feedback Loop<br/>telemetry -> data mining]
   T --> D
 ```
 
