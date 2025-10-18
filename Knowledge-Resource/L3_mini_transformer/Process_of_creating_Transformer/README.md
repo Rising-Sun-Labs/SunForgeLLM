@@ -48,3 +48,4 @@
     - if OOM: reduce batch size or dimensions.
     - If stuck: Lower LR, train longer, add data or reduce dropout.
     
+

@@ -202,3 +202,30 @@
             python L5_sample.py --device cuda --temperature 0.8 --top_k 80 --max_new_tokens 500
             ```
   
+
+### How to use Lesson 6
+- Baseline (CPU-safe):
+    ```
+  python train.py --device cpu --max_steps 2000 --batch_size 64 --block_size 128 \
+  --n_layer 4 --n_embed 256 --dropout 0.1 --val_every 200
+    ```
+  
+- Better quality (GPU if you have)
+    ```
+    python train.py --device cuda --max_steps 5000 --batch_size 128 --block_size 256 \
+  --n_layer 6 --n_embed 384 --dropout 0.1 --val_every 200 \
+  --use_cosine --warmup_steps 200
+    ```
+
+- Memory tight (but strong):
+    ```
+    python train.py --device cuda --max_steps 6000 --batch_size 64 --grad_accum_steps 2 \
+  --block_size 256 --n_layer 6 --n_embed 384 --dropout 0.1 \
+  --val_every 200 --use_cosine --warmup_steps 200
+    ```
+-- Sample (safe defaults)
+    ```
+    python sample.py --device cpu --temperature 0.8 --top_k 50 --max_new_tokens 400
+    # or load the last checkpoint:
+    python sample.py --ckpt mini_gpt_last.pt --temperature 0.9 --top_k 80
+    ```
