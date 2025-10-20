@@ -1,49 +1,52 @@
-### Some interesting keyword and their meaning 
-- 🌀 1. What is an “epoch”?
-    - In DL training, an epoch means one full pass through the entire training dataset.
-      - if your dataset has 10,000 images
-      - and you batch size is 100
-        - then one epoch = 100 steps (because 10,000 % 100 = 100).
-    - During each epoch
-      - the model sees every training example once
-      - updates weights based on all batches
-      - ideally gets a little better
-        ```
-        Example:
-        Suppose you train a cat-vs-dog classifier with 1000 images.
-        num_images = 1000
-        batch_size = 100
-        epochs = 5
+## LLM_project structure:
+        /llm-project
+        ├── README.md
+        ├── docs/
+        ├── data/
+        ├── src/
+        │   ├── tokenizer/
+        │   ├── transformer/
+        │   ├── multimodal/
+        │   ├── training/
+        │   └── inference/
+        ├── examples/
+        └── requirements.txt
 
-        - For each epoch:
-            - The model goes through all 1000 images
-            - Divided into 10 batches of 100 images each
-            - Updates weights after each batch
-        
-        - Over 5 epochs:
-            - The model sees each image 5 times total
-            - This usually improves learning up to a point
-        
-        - Important
-            - More epochs -> More learning -> risk of overfitting if too many.
-            - Too few epochs -> underfitting
-        ```
-        
-- 🧠2. Why do we use epsilon?
-    - It usually used in math operations like division or normalization to:
-      - avoid division by zero
-      - improve numerical stability
-      - Prevent NaNs (Not a Number errors)
-      ```
-      For example, in normalization:
-      x_norm = x / sqrt(variance + eps)
-      if variance = 0 then, sqrt(0+0) -> 0 division by 0 -> error
-      but with eps:
-      sqrt(0 + 1e-5) = sqrt(0.00001)
-      by division by zero!
-      ```
-- Summary Table:
-| Term         | Meaning                                                   | Example                                     |
-| ------------ | --------------------------------------------------------- | ------------------------------------------- |
-| `epoch`      | One complete pass over the entire training dataset        | `epochs = 10` → train 10 times over dataset |
-| `eps = 1e-5` | A small constant to avoid division by zero or instability | Used in normalization layers, optimizers    |
+
+### How to run:
+
+0) cd llm-project
+```
+python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+1) Train tokenizer
+```
+python src/tokenizer/train_bpe.py --text data/tiny_corpus.txt --size 800 --out data/tokenizer.json
+```
+2) Train tiny LM
+```
+python src/training/train_lm.py --text data/tiny_corpus.txt \
+  --tokenizer data/tokenizer.json --save runs/lm_demo --steps 300 --device cpu
+```
+3) Generate email
+```
+python src/inference/generate.py --tokenizer data/tokenizer.json \
+  --ckpt runs/lm_demo/best.pt --prompt "Write a helpful onboarding email for new users:" --device cpu
+```
+4) Summarize an email
+```
+python src/inference/summarize.py --tokenizer data/tokenizer.json \
+  --ckpt runs/lm_demo/best.pt --text "Hey team, here are the updates..." --device cpu
+```
+5) Multimodal caption demo
+```
+python src/training/train_mm_caption.py \
+  --captions data/captions/captions.jsonl --images_root data/captions \
+  --tokenizer data/tokenizer.json --save runs/mm_demo --steps 150 --device cpu
+```
+6) Local API (offline)
+```
+uvicorn src.server.fastapi_server:app --reload
+```
